@@ -38,7 +38,8 @@ public class ShortLink {
     }
 
     public void decrementClicks() {
-        remainingClicks--;
+        if (remainingClicks > 0) {
+            remainingClicks--;}
     }
 
     public void setLifespan(int lifespan) {
