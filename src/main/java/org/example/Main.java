@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 import java.util.Scanner;
+import java.awt.Desktop;
+import java.net.URI;
 
 public class Main {
     private static final String FILE_PATH = "linkslist.txt";
@@ -59,7 +61,7 @@ public class Main {
             System.out.println("Выберите действие:");
             System.out.println("1. Создать короткую ссылку");
             System.out.println("2. Вывести список всех коротких ссылок данного пользователя");
-            System.out.println("3. Ввести короткую ссылку для получения длинной");
+            System.out.println("3. Перейти по короткой ссылке");
             System.out.println("4. Сменить пользователя");
             System.out.println("0. Выход");
             int choice = scanner.nextInt();
@@ -67,7 +69,7 @@ public class Main {
             switch (choice) {
                 case 1: createShortLink(); break;
                 case 2: manageUserLinks(); break;
-                case 3: getLongUrlFromShortLink(); break;
+                case 3: followShortLink();; break;
                 case 4: currentUserId = 0; return;
                 case 0: System.exit(0); break;
                 default: System.out.println("Неверный выбор. Попробуйте снова."); break;
@@ -141,16 +143,23 @@ public class Main {
         }
     }
 
-    private static void getLongUrlFromShortLink() {
+    private static void followShortLink() {
         System.out.print("Введите короткую ссылку: ");
         String shortUrl = scanner.nextLine();
         ShortLink link = linkManager.getLink(shortUrl);
         if (link != null) {
             if (link.isValid()) {
-                link.decrementClicks();
-                linkManager.updateLink(link, currentUserId);
-                System.out.printf("Длинная ссылка: %s%n", link.getLongUrl());
-                System.out.println("Количество оставшихся переходов: " + link.getRemainingClicks());
+                link.decrementClicks(); // Уменьшить количество оставшихся переходов
+                linkManager.updateLink(link, currentUserId); // Обновить ссылку в менеджере
+
+                System.out.printf("Оставшийся срок жизни ссылки: %d минут.%n", link.getLifespan());
+                System.out.printf("Количество оставшихся переходов: %d%n", link.getRemainingClicks());
+
+                try {
+                    Desktop.getDesktop().browse(new URI(link.getLongUrl())); // Открыть ссылку в браузере
+                } catch (Exception e) {
+                    System.out.println("Не удалось открыть ссылку в браузере: " + e.getMessage());
+                }
             } else {
                 System.out.println("Ссылка больше недействительна (исчерпаны переходы или срок жизни завершен).");
                 linkManager.deleteLink(link);
