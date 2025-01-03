@@ -149,14 +149,14 @@ public class Main {
         ShortLink link = linkManager.getLink(shortUrl);
         if (link != null) {
             if (link.isValid()) {
-                link.decrementClicks(); // Уменьшить количество оставшихся переходов
-                linkManager.updateLink(link, currentUserId); // Обновить ссылку в менеджере
+                link.decrementClicks();
+                linkManager.updateLink(link, currentUserId);
 
                 System.out.printf("Оставшийся срок жизни ссылки: %d минут.%n", link.getLifespan());
                 System.out.printf("Количество оставшихся переходов: %d%n", link.getRemainingClicks());
 
                 try {
-                    Desktop.getDesktop().browse(new URI(link.getLongUrl())); // Открыть ссылку в браузере
+                    Desktop.getDesktop().browse(new URI(link.getLongUrl()));
                 } catch (Exception e) {
                     System.out.println("Не удалось открыть ссылку в браузере: " + e.getMessage());
                 }
