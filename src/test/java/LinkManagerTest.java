@@ -1,55 +1,59 @@
-package org.example;
-
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-
-import java.io.*;
-import java.time.LocalDateTime;
-import java.util.List;
-
 import static org.junit.jupiter.api.Assertions.*;
 
 class LinkManagerTest {
-    private static final String TEST_FILE_PATH = "test_linkslist.txt";
-    private LinkManager linkManager;
-
-    @BeforeEach
-    void setUp() throws IOException {
-        linkManager = new FileLinkManager(TEST_FILE_PATH);
-        new File(TEST_FILE_PATH).createNewFile();
-    }
+    
+    private final LinkManager linkManager = new FileLinkManager("linkslist.txt");
 
     @Test
-    void testCreateShortLink() {
-        linkManager.createShortLink(1, "http://example.com", 60, 5);
-        ShortLink retrievedLink = linkManager.getLink("http://linkreducer.ru/" + TEST_FILE_PATH.substring(13, 18)); // Adjust according to UUID
-        assertNotNull(retrievedLink);
-        assertEquals("http://example.com", retrievedLink.getLongUrl());
+    void testUniqueShortLinksForDifferentUsers() {
+        String url = "https://example.com";
+        int userId1 = 1;
+        int userId2 = 2;
+
+        linkManager.createShortLink(userId1, url, 60, 10);
+        ShortLink shortLink1 = linkManager.getLinkByLongUrl(url, userId1);
+        
+        linkManager.createShortLink(userId2, url, 60, 10);
+        ShortLink shortLink2 = linkManager.getLinkByLongUrl(url, userId2);
+
+        assertNotEquals(shortLink1.getShortUrl(), shortLink2.getShortUrl());
     }
 
-    @Test
-    void testGetUserLinks() {
-        linkManager.createShortLink(1, "http://example1.com", 60, 5);
-        linkManager.createShortLink(1, "http://example2.com", 60, 5);
-        List<ShortLink> userLinks = linkManager.getUserLinks(1);
-        assertEquals(2, userLinks.size());
-    }
+@Test
+void testLimitExhaustionBlocksLink() {
+    int userId = 1;
+    String url = "https://limitcheck.com";
+    linkManager.createShortLink(userId, url, 60, 1); // 1 клик
 
-    @Test
-    void testUpdateLink() {
-        linkManager.createShortLink(1, "http://example.com", 60, 5);
-        ShortLink link = linkManager.getLink("http://linkreducer.ru/" + TEST_FILE_PATH.substring(13, 18)); // Adjust according to UUID
-        link.setRemainingClicks(3);
-        linkManager.updateLink(link, 1);
-        ShortLink updatedLink = linkManager.getLink("http://linkreducer.ru/" + TEST_FILE_PATH.substring(13, 18));
-        assertEquals(3, updatedLink.getRemainingClicks());
-    }
+    ShortLink link = linkManager.getLink(url);
+    link.decrementClicks(); // Уменьшаем до 0
 
-    @Test
-    void testDeleteLink() {
-        linkManager.createShortLink(1, "http://example.com", 60, 5);
-        ShortLink link = linkManager.getLink("http://linkreducer.ru/" + TEST_FILE_PATH.substring(13, 18)); // Adjust according to UUID
-        linkManager.deleteLink(link);
-        assertNull(linkManager.getLink(link.getShortUrl()));
-    }
+    assertEquals(0, link.getRemainingClicks());
+    assertFalse(link.isValid());
+
+    // Проверяем, что переход по ссылке теперь недоступен.
+    Exception exception = assertThrows(IllegalStateException.class, () -> {
+        linkManager.followLink(link.getShortUrl());
+    });
+
+    assertEquals("Ссылка недействительна", exception.getMessage());
 }
+    @Test
+void testNotificationsOnLinkUnavailability() {
+    int userId = 1;
+    String url = "https://unavailablelink.com";
+    linkManager.createShortLink(userId, url, 1, 1); // 1 минута жизни и 1 клик
+
+    ShortLink link = linkManager.getLink(url);
+    link.decrementClicks(); // Уменьшаем до 0
+    assertFalse(link.isValid());
+
+    String notification = linkManager.followLink(link.getShortUrl()); // Метод возвращает сообщение
+
+    assertEquals("Ссылка недоступна из-за исчерпания лимита или истечения срока жизни.", notification);
+}
+    
+}
+
+
