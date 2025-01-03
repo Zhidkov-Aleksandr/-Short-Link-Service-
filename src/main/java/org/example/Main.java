@@ -99,7 +99,7 @@ public class Main {
             System.out.println("Ваши короткие ссылки:");
             for (int i = 0; i < userLinks.size(); i++) {
                 ShortLink link = userLinks.get(i);
-                System.out.printf("%d. Короткая ссылка: %s, длинная ссылка: %s, срок жизни: %d минут, оставшиеся переходы: %d%n",
+                System.out.printf("%d. Короткая ссылка: %s, \n длинная ссылка: %s \n срок жизни ссылки: %d минут\n оставшиеся переходы: %d%n",
                         i + 1, link.getShortUrl(), link.getLongUrl(), link.getLifespan(), link.getRemainingClicks());
             }
             System.out.println("Выберите номер ссылки для изменения (0 для выхода): ");
