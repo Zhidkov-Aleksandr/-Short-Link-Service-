@@ -5,6 +5,9 @@
     },
     {
       "uuid": "1e6f2210-cd58-4848-ba2f-9f313edb429d"
+    },
+    {
+      "uuid": "5a1b58e6-7ac2-4dfc-b5c2-5ce1e0731267"
     }
   ],
   "links": [
@@ -26,6 +29,46 @@
       "maxTransitions": 3,
       "currentTransitions": 1,
       "creationTimeMillis": 1736241542056,
+      "invalid": false
+    },
+    {
+      "ownerUuid": "5a1b58e6-7ac2-4dfc-b5c2-5ce1e0731267",
+      "longUrl": "https://apps.skillfactory.ru/",
+      "shortUrl": "short.ly/8dd9ff40",
+      "lifetimeHours": 37,
+      "maxTransitions": 4,
+      "currentTransitions": 4,
+      "creationTimeMillis": 1736243683343,
+      "invalid": true
+    },
+    {
+      "ownerUuid": "5a1b58e6-7ac2-4dfc-b5c2-5ce1e0731267",
+      "longUrl": "https://yandex.ru/pogoda/moscow",
+      "shortUrl": "short.ly/280e464e",
+      "lifetimeHours": 44,
+      "maxTransitions": 15,
+      "currentTransitions": 0,
+      "creationTimeMillis": 1736244427695,
+      "invalid": false
+    },
+    {
+      "ownerUuid": "5a1b58e6-7ac2-4dfc-b5c2-5ce1e0731267",
+      "longUrl": "https://yandex.ru/pogoda/moscow",
+      "shortUrl": "short.ly/8b6b8ab6",
+      "lifetimeHours": 43,
+      "maxTransitions": 13,
+      "currentTransitions": 0,
+      "creationTimeMillis": 1736244441687,
+      "invalid": false
+    },
+    {
+      "ownerUuid": "5a1b58e6-7ac2-4dfc-b5c2-5ce1e0731267",
+      "longUrl": "https://yandex.ru/pogoda/moscow",
+      "shortUrl": "short.ly/f53b5746",
+      "lifetimeHours": 48,
+      "maxTransitions": 43,
+      "currentTransitions": 0,
+      "creationTimeMillis": 1736244454974,
       "invalid": false
     }
   ]
