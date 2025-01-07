@@ -1,0 +1,32 @@
+{
+  "users": [
+    {
+      "uuid": "e504a4f4-e561-499e-b8b6-13674fd21803"
+    },
+    {
+      "uuid": "1e6f2210-cd58-4848-ba2f-9f313edb429d"
+    }
+  ],
+  "links": [
+    {
+      "ownerUuid": "e504a4f4-e561-499e-b8b6-13674fd21803",
+      "longUrl": "https://student-lk.skillfactory.ru/my-study",
+      "shortUrl": "short.ly/cf06d6ac",
+      "lifetimeHours": 24,
+      "maxTransitions": 4,
+      "currentTransitions": 4,
+      "creationTimeMillis": 1736241334520,
+      "invalid": true
+    },
+    {
+      "ownerUuid": "1e6f2210-cd58-4848-ba2f-9f313edb429d",
+      "longUrl": "https://student-lk.skillfactory.ru/my-study",
+      "shortUrl": "short.ly/59ae3264",
+      "lifetimeHours": 47,
+      "maxTransitions": 3,
+      "currentTransitions": 1,
+      "creationTimeMillis": 1736241542056,
+      "invalid": false
+    }
+  ]
+}
